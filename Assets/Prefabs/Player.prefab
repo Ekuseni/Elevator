@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c756734e959474384b9bc2bae88cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookSensitivity: 100
+  lookSensitivity: 50
   playerTransform: {fileID: 4403212349045351932}
 --- !u!1 &4403212349045351935
 GameObject:
@@ -224,7 +224,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.8
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
