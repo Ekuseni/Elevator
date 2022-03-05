@@ -4,33 +4,37 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerInput = Player.Input.PlayerInput;
 
-public class CallButtonController : MonoBehaviour, PlayerInput.IPlayerInteractActions
+public class CallButtonController : MonoBehaviour
 {
     private static int buttonTriggerAnimID = Animator.StringToHash("Click");
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private Animator buttonAnimator;
 
+    private bool playerInRange = false;
+
     private void Awake()
     {
-        playerInputManager.PlayerInput.PlayerInteract.SetCallbacks(this);
+        playerInputManager.PlayerInput.PlayerInteract.Enable();
+    }
+
+    private void OnEnable()
+    {
+        playerInputManager.PlayerInput.PlayerInteract.Interact.performed += OnInteractPerformed;
+    }
+
+    private void OnDisable()
+    {
+        playerInputManager.PlayerInput.PlayerInteract.Interact.performed -= OnInteractPerformed;
     }
 
     public void SetPlayerInRange(bool value)
     {
-        if (value)
-        {
-            playerInputManager.PlayerInput.PlayerInteract.Enable();
-            
-        }
-        else
-        {
-            playerInputManager.PlayerInput.PlayerInteract.Disable();
-        }
+        playerInRange = value;
     }
 
-    public void OnInteract(InputAction.CallbackContext context)
+    private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (playerInRange && context.performed)
         {
             buttonAnimator.SetTrigger(buttonTriggerAnimID);
         }

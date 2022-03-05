@@ -11,17 +11,20 @@ public class PlayerDetector : MonoBehaviour
    public UnityEvent OnPlayerEnter;
    public UnityEvent OnPlayerExit;
 
+   private static int layer = 7;
+
+   private void Awake()
+   {
+      gameObject.layer = layer;
+   }
+
    private void OnTriggerEnter(Collider other)
    {
-      Debug.Log(other);
-
       OnPlayerEnter?.Invoke();
    }
 
    private void OnTriggerExit(Collider other)
    {
-      Debug.Log(other);
-
       OnPlayerExit?.Invoke();
    }
 }

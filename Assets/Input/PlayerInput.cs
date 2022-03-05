@@ -851,16 +851,16 @@ namespace Player.Input
             {
                 if (m_Wrapper.m_PlayerInteractActionsCallbackInterface != null)
                 {
-                    @Interact.started -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
-                    @Interact.performed -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
-                    @Interact.canceled -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteract;
+                    @Interact.started -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteractPerformed;
+                    @Interact.performed -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteractPerformed;
+                    @Interact.canceled -= m_Wrapper.m_PlayerInteractActionsCallbackInterface.OnInteractPerformed;
                 }
                 m_Wrapper.m_PlayerInteractActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Interact.started += instance.OnInteract;
-                    @Interact.performed += instance.OnInteract;
-                    @Interact.canceled += instance.OnInteract;
+                    @Interact.started += instance.OnInteractPerformed;
+                    @Interact.performed += instance.OnInteractPerformed;
+                    @Interact.canceled += instance.OnInteractPerformed;
                 }
             }
         }
@@ -934,7 +934,7 @@ namespace Player.Input
         }
         public interface IPlayerInteractActions
         {
-            void OnInteract(InputAction.CallbackContext context);
+            void OnInteractPerformed(InputAction.CallbackContext context);
         }
         public interface IPlayerLookActions
         {
