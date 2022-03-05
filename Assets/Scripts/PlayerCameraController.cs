@@ -7,7 +7,6 @@ using PlayerInput = Player.Input.PlayerInput;
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private PlayerInputManager playerInputManager;
-
     [SerializeField] private float lookSensitivity = 100f;
     [SerializeField] private Transform playerTransform;
     private float xRotation = 0f;
