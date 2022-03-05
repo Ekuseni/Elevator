@@ -177,6 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c756734e959474384b9bc2bae88cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInputManager: {fileID: 11400000, guid: f9d3b24ae52572d4199659cce93acda2, type: 2}
   lookSensitivity: 50
   playerTransform: {fileID: 4403212349045351932}
 --- !u!1 &4403212349045351935
@@ -243,6 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8c53a41f8e75af4bb378bfe0042bc3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInputManager: {fileID: 11400000, guid: f9d3b24ae52572d4199659cce93acda2, type: 2}
   playerSpeed: 10
   characterController: {fileID: 4403212349045351922}
   jumpHeight: 1

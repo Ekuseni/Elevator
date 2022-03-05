@@ -6,6 +6,8 @@ using PlayerInput = Player.Input.PlayerInput;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private PlayerInputManager playerInputManager;
+
     [SerializeField] private float playerSpeed;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float jumpHeight;
@@ -13,23 +15,20 @@ public class PlayerController : MonoBehaviour
     private readonly float gravity = Physics.gravity.y;
     private float verticalVelocity;
 
-    private PlayerInput playerInput; 
-
     private void Awake()
     {
-        playerInput = new PlayerInput();
-        playerInput.PlayerMove.Enable();
+        playerInputManager.PlayerInput.PlayerMove.Enable();
     }
 
     private void Update()
     {
-        var playerMovement = playerInput.PlayerMove.Move.ReadValue<Vector2>() * playerSpeed;
+        var playerMovement = playerInputManager.PlayerInput.PlayerMove.Move.ReadValue<Vector2>() * playerSpeed;
 
         if (characterController.isGrounded)
         {
             verticalVelocity = gravity * 0.1f;
 
-            if (playerInput.PlayerMove.Jump.triggered)
+            if (playerInputManager.PlayerInput.PlayerMove.Jump.triggered)
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -gravity * 2f);
             }
