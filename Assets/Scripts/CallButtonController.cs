@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -8,6 +9,7 @@ public class CallButtonController : MonoBehaviour
 
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private Animator buttonAnimator;
+    [SerializeField] private TextMeshPro floorIndicator;
 
     public UnityEvent OnButtonInteract;
 
@@ -31,6 +33,11 @@ public class CallButtonController : MonoBehaviour
     public void SetPlayerInRange(bool value)
     {
         playerInRange = value;
+    }
+
+    public void SetFloorNumber(int floor)
+    {
+        floorIndicator.text = floor.ToString();
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext context)

@@ -10,11 +10,17 @@ public class DoorController : MonoBehaviour
     [SerializeField] private Animator doorAnimator;
     [SerializeField] private float autoCloseTime = 5f;
 
+    //field controlled by animation
+    public bool Closed;
+
+    public PlayerInWayEvent PlayerInWay;
+
     private Coroutine autoCloseCoroutine;
 
     public void SetPlayerInWay(bool value)
     {
         doorAnimator.SetBool(playerInWayAnimID, value);
+        PlayerInWay?.Invoke(value);
     }
 
     public void SetOpen(bool value)
