@@ -16,6 +16,10 @@ public class PlayerCameraController : MonoBehaviour
     {
         playerInputManager.PlayerCamera = playerCamera;
         playerInputManager.PlayerInput.PlayerLook.Enable();
+    }
+
+    private void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
     }
 

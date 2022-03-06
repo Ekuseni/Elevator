@@ -9,9 +9,11 @@ public class ElevatorShaftDoorController : MonoBehaviour
     public DoorController DoorController => doorController;
     public Transform ElevatorTarget => elevatorTarget;
 
-    public void SetUp(ElevatorShaftController elevatorShaftController)
+    private int floorNumber;
+
+    public void SetUp(ElevatorShaftController elevatorShaftController, int floorNumber)
     {
-        callButtonController.OnButtonInteract.AddListener(() => elevatorShaftController.ElevatorCallEvent.Invoke(this));
+        callButtonController.OnButtonInteract.AddListener(() => elevatorShaftController.GoToFloor.Invoke(floorNumber));
         elevatorShaftController.MovedToFloor.AddListener(callButtonController.SetFloorNumber);
         doorController.PlayerInWay.AddListener(elevatorShaftController.OnPlayerInWay);
     }

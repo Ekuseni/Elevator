@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 moveVector = transform.right * playerMovement.x + transform.forward * playerMovement.y + transform.up * verticalVelocity;
-        characterController.Move(moveVector * Time.deltaTime);
+        var flags = characterController.Move(moveVector * Time.deltaTime);
+
+        if (flags == CollisionFlags.Above)
+        {
+            verticalVelocity = 0f;
+        }
     }
 }

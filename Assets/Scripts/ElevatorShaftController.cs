@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[Serializable]
-public class ElevatorCallEvent : UnityEvent<ElevatorShaftDoorController> { }
+
 
 [Serializable]
 public class PlayerInWayEvent : UnityEvent<bool> { }
+
+[Serializable]
+public class ToggleDoorsEvent : UnityEvent<bool> { }
 
 [Serializable]
 public class MovedToFloorEvent : UnityEvent<int> { }
@@ -23,10 +25,10 @@ public class ElevatorShaftController : MonoBehaviour
     [SerializeField] private List<ElevatorShaftDoorController> elevatorShaftDoors;
     [SerializeField] private float elevatorSpeed;
     [SerializeField] private float floorHeight;
-
-    public ElevatorCallEvent ElevatorCallEvent = new ElevatorCallEvent();
+    
     public MovedToFloorEvent MovedToFloor = new MovedToFloorEvent();
     public GoToFloorEvent GoToFloor = new GoToFloorEvent();
+    public ToggleDoorsEvent ToggleDoors = new ToggleDoorsEvent();
 
     public int FloorCount => elevatorShaftDoors.Count;
 
@@ -36,29 +38,30 @@ public class ElevatorShaftController : MonoBehaviour
 
     private void Awake()
     {
-        foreach (var elevatorShaftDoor in elevatorShaftDoors)
+        for (int i = 0; i < FloorCount; i++)
         {
-            elevatorShaftDoor.SetUp(this);
+            elevatorShaftDoors[i].SetUp(this, i);
         }
 
         elevatorCabin.ElevatorCabinPanelController.SetUp(this);
 
-        ElevatorCallEvent.AddListener(OnCallElevator);
         GoToFloor.AddListener(OnGoToFloor);
+        ToggleDoors.AddListener(OnToggleDoors);
         MovedToFloor?.Invoke(Mathf.FloorToInt((elevatorCabin.transform.localPosition.y + floorHeight / 2f) / floorHeight));
     }
 
     private void OnGoToFloor(int floor)
     {
-        OnCallElevator(elevatorShaftDoors[floor]);
-    }
-
-    private void OnCallElevator(ElevatorShaftDoorController elevatorShaftDoorController)
-    {
         if (!enRoute)
         {
-            StartCoroutine(GoToTargetAndOpenDoors(elevatorShaftDoorController));
+            StartCoroutine(GoToTargetAndOpenDoors(floor));
         }
+    }
+
+    private void OnToggleDoors(bool value)
+    {
+        elevatorShaftDoors[currentFloor].DoorController.SetOpen(value);
+        elevatorCabin.DoorController.SetOpen(value);
     }
 
     public void OnPlayerInWay(bool value)
@@ -66,42 +69,51 @@ public class ElevatorShaftController : MonoBehaviour
         elevatorCabin.DoorController.SetPlayerInWay(value);
     }
 
-    private IEnumerator GoToTargetAndOpenDoors(ElevatorShaftDoorController elevatorShaftDoorController)
+    private IEnumerator GoToTargetAndOpenDoors(int floor)
     {
-        enRoute = true;
-        int lastFloor = currentFloor;
+        var elevatorShaftDoorController = elevatorShaftDoors[floor];
 
-        yield return new WaitUntil(() => elevatorCabin.DoorController.Closed);
-        yield return new WaitUntil(() => elevatorShaftDoorController.DoorController.Closed);
-
-        Vector3 lastPos = elevatorCabin.transform.position;
-
-        while (Vector3.Distance(elevatorCabin.transform.position, elevatorShaftDoorController.ElevatorTarget.position) > 0.1f)
+        if (currentFloor != floor)
         {
-            elevatorCabin.transform.position =
-                Vector3.MoveTowards(elevatorCabin.transform.position, elevatorShaftDoorController.ElevatorTarget.position, elevatorSpeed * Time.deltaTime);
+            enRoute = true;
+            
+            OnToggleDoors(false);
 
-            if (playerInputManager.InsideElevator)
+            yield return new WaitUntil(() => elevatorCabin.DoorController.Closed);
+            yield return new WaitUntil(() => elevatorShaftDoorController.DoorController.Closed);
+            
+            elevatorCabin.ToggleEngineSound(true);
+
+            int lastFloor = currentFloor;
+
+            Vector3 lastPos = elevatorCabin.transform.position;
+
+            while (Vector3.Distance(elevatorCabin.transform.position, elevatorShaftDoorController.ElevatorTarget.position) > 0.1f)
             {
-                var additionalMoveVector = elevatorCabin.transform.position - lastPos;
-                Debug.Log(additionalMoveVector);
-                playerInputManager.MovePlayer(additionalMoveVector);
-                lastPos = elevatorCabin.transform.position;
-            }
+                elevatorCabin.transform.position =
+                    Vector3.MoveTowards(elevatorCabin.transform.position, elevatorShaftDoorController.ElevatorTarget.position, elevatorSpeed * Time.deltaTime);
 
-            if (currentFloor != lastFloor)
-            {
-                lastFloor = currentFloor;
-                MovedToFloor?.Invoke(currentFloor);
-            }
+                if (playerInputManager.InsideElevator)
+                {
+                    var additionalMoveVector = elevatorCabin.transform.position - lastPos;
+                    Debug.Log(additionalMoveVector);
+                    playerInputManager.MovePlayer(additionalMoveVector);
+                    lastPos = elevatorCabin.transform.position;
+                }
 
-            yield return null;
+                if (currentFloor != lastFloor)
+                {
+                    lastFloor = currentFloor;
+                    MovedToFloor?.Invoke(currentFloor);
+                }
+
+                yield return null;
+            }
         }
 
         elevatorCabin.transform.position = elevatorShaftDoorController.ElevatorTarget.position;
-
-        elevatorShaftDoorController.DoorController.SetOpen(true);
-        elevatorCabin.DoorController.SetOpen(true);
+        elevatorCabin.ToggleEngineSound(false);
+        OnToggleDoors(true);
 
         enRoute = false;
 

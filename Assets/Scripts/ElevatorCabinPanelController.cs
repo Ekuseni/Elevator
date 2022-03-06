@@ -70,6 +70,16 @@ public class ElevatorCabinPanelController : MonoBehaviour
         }
 
         elevatorShaftController.MovedToFloor.AddListener((floor) => floorIndicator.text = floor.ToString());
+
+        closeDoorsButton.onClick.AddListener(() =>
+        {
+            elevatorShaftController.ToggleDoors.Invoke(false);
+        });
+
+        openDoorsButton.onClick.AddListener(() =>
+        {
+            elevatorShaftController.ToggleDoors.Invoke(true);
+        });
     }
 
     public void SetPlayerInRange(bool value)
