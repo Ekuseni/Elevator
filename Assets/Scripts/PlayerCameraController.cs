@@ -6,6 +6,7 @@ using PlayerInput = Player.Input.PlayerInput;
 
 public class PlayerCameraController : MonoBehaviour
 {
+    [SerializeField] private Camera playerCamera;
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private float lookSensitivity = 100f;
     [SerializeField] private Transform playerTransform;
@@ -13,6 +14,7 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Awake()
     {
+        playerInputManager.PlayerCamera = playerCamera;
         playerInputManager.PlayerInput.PlayerLook.Enable();
         Cursor.lockState = CursorLockMode.Locked;
     }

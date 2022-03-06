@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerInputManager.PlayerInput.PlayerMove.Enable();
+        playerInputManager.PlayerTransform = transform;
+
+        playerInputManager.MovePlayer = characterController.Move;
     }
 
     private void Update()
