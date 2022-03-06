@@ -4,15 +4,38 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static readonly int openAnimID = Animator.StringToHash("Open");
+    private static readonly int playerInWayAnimID = Animator.StringToHash("PlayerInWay");
+
+    [SerializeField] private Animator doorAnimator;
+    [SerializeField] private float autoCloseTime = 5f;
+
+    private Coroutine autoCloseCoroutine;
+
+    public void SetPlayerInWay(bool value)
     {
-        
+        doorAnimator.SetBool(playerInWayAnimID, value);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetOpen(bool value)
     {
-        
+        if (autoCloseCoroutine != null)
+        {
+            StopCoroutine(autoCloseCoroutine);
+        }
+
+        if (value)
+        {
+            autoCloseCoroutine = StartCoroutine(AutoCloseCoroutine(autoCloseTime));
+        }
+
+        doorAnimator.SetBool(openAnimID, value);
+    }
+
+    private IEnumerator AutoCloseCoroutine(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        doorAnimator.SetBool(openAnimID, false);
     }
 }

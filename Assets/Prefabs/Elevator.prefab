@@ -983,6 +983,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3848505266966840019}
+  - component: {fileID: 3406656831684245883}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -1006,6 +1007,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3406656831684245883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295760695923439710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba736ccc815107438782288a31f21fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elevatorManager: {fileID: 11400000, guid: 183147791bfae2e4d9a7cfd949fafcb2, type: 2}
+  doorController: {fileID: 3523534445566765905}
 --- !u!1 &7735813059057536207
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,3 +1733,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1693253991871750854, guid: dc077dfef65d0f745a06c1d53e5b35b4, type: 3}
   m_PrefabInstance: {fileID: 864578638583524471}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3523534445566765905 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4258578237341648678, guid: dc077dfef65d0f745a06c1d53e5b35b4, type: 3}
+  m_PrefabInstance: {fileID: 864578638583524471}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c7a73d097225f49ad2f0ccaec42ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

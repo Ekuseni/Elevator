@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class DoorFrameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private ElevatorManager elevatorManager;
+    [SerializeField] private CallButtonController callButtonController;
+    [SerializeField] private DoorController doorController;
+    [SerializeField] private Transform elevatorTarget;
+
+    public DoorController DoorController => doorController;
+    public Transform ElevatorTarget => elevatorTarget;
+
+    private void Awake()
     {
-        
+        callButtonController.OnButtonInteract.AddListener(PerformOnCallActions);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void PerformOnCallActions()
     {
-        
+        elevatorManager.ElevatorCallEvent.Invoke(this);
     }
 }

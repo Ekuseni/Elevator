@@ -1,14 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using PlayerInput = Player.Input.PlayerInput;
 
 public class CallButtonController : MonoBehaviour
 {
-    private static int buttonTriggerAnimID = Animator.StringToHash("Click");
+    private static readonly int buttonTriggerAnimID = Animator.StringToHash("Click");
+
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private Animator buttonAnimator;
+
+    public UnityEvent OnButtonInteract;
 
     private bool playerInRange = false;
 
@@ -37,6 +38,7 @@ public class CallButtonController : MonoBehaviour
         if (playerInRange && context.performed)
         {
             buttonAnimator.SetTrigger(buttonTriggerAnimID);
+            OnButtonInteract?.Invoke();
         }
     }
 }
